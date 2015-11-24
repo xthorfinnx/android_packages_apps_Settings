@@ -124,6 +124,15 @@
         settings:controller="com.android.settings.fuelgauge.FastChargingPreferenceController"
         settings:position="middle"/>
 
+    <com.rising.settings.preferences.AdaptivePreference
+        android:fragment="com.android.settings.fuelgauge.SmartBatterySettings"
+        android:key="smart_battery_manager"
+        android:title="@string/smart_battery_manager_title"
+        settings:controller="com.android.settings.fuelgauge.batterytip.BatteryManagerPreferenceController"
+        settings:keywords="@string/keywords_battery_adaptive_preferences"
+        settings:searchable="true"
+        settings:position="bottom" />
+
     <com.android.settingslib.widget.FooterPreference
         android:key="power_usage_footer"
         android:title="@string/battery_footer_summary"
