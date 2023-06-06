@@ -20,6 +20,7 @@ import static com.android.internal.jank.InteractionJankMonitor.CUJ_SETTINGS_SLID
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.preference.SeekBarVolumizer;
@@ -60,28 +61,30 @@ public class VolumeSeekBarPreference extends SeekBarPreference {
     @VisibleForTesting
     AudioManager mAudioManager;
 
+    private Position position;
+
     public VolumeSeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr,
             int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        setLayoutResource(R.layout.preference_volume_slider);
+        init(context, attrs);
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
     }
 
     public VolumeSeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setLayoutResource(R.layout.preference_volume_slider);
+        init(context, attrs);
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
     }
 
     public VolumeSeekBarPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setLayoutResource(R.layout.preference_volume_slider);
+        init(context, attrs);
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
     }
 
     public VolumeSeekBarPreference(Context context) {
         super(context);
-        setLayoutResource(R.layout.preference_volume_slider);
+        init(context, null);
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
     }
 
@@ -161,6 +164,7 @@ public class VolumeSeekBarPreference extends SeekBarPreference {
         if (mVolumizer == null) {
             mVolumizer = new SeekBarVolumizer(getContext(), mStream, sampleUri, sbvc);
         }
+        mSeekBar.setVisibility(View.VISIBLE);
         mVolumizer.start();
         mVolumizer.setSeekBar(mSeekBar);
         updateIconView();
@@ -213,6 +217,63 @@ public class VolumeSeekBarPreference extends SeekBarPreference {
             mSuppressionTextView.setText(mSuppressionText);
             final boolean showSuppression = !TextUtils.isEmpty(mSuppressionText);
             mSuppressionTextView.setVisibility(showSuppression ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void init(Context context, AttributeSet attrs) {
+        // Retrieve and set the layout resource based on position
+        // otherwise do not set any layout
+        position = getPosition(context, attrs);
+        if (position != null) {
+            int layoutResId = getLayoutResourceId(position);
+            setLayoutResource(layoutResId);
+        }
+    }
+
+    private Position getPosition(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AdaptivePreference);
+        String positionAttribute = typedArray.getString(R.styleable.AdaptivePreference_position);
+        typedArray.recycle();
+
+        Position positionFromAttribute = Position.fromAttribute(positionAttribute);
+        if (positionFromAttribute != null) {
+            return positionFromAttribute;
+        }
+
+        return null;
+    }
+
+    private int getLayoutResourceId(Position position) {
+        switch (position) {
+            case TOP:
+                return R.layout.arc_card_about_top;
+            case BOTTOM:
+                return R.layout.arc_card_about_bottom;
+            case MIDDLE:
+                return R.layout.arc_card_about_middle;
+            default:
+                return R.layout.arc_card_about_middle;
+        }
+    }
+
+    private enum Position {
+        TOP,
+        MIDDLE,
+        BOTTOM;
+
+        public static Position fromAttribute(String attribute) {
+            if (attribute != null) {
+                switch (attribute.toLowerCase()) {
+                    case "top":
+                        return TOP;
+                    case "bottom":
+                        return BOTTOM;
+                    case "middle":
+                        return MIDDLE;
+                        
+                }
+            }
+            return null;
         }
     }
 

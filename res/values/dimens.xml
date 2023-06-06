@@ -561,7 +561,7 @@
     <dimen name="bot_card_radius">12dp</dimen>
     <dimen name="pref_top_card_bottom_margin">10dp</dimen>
     <dimen name="pref_mid_card_bottom_margin">10dp</dimen>
-    <dimen name="pref_bot_card_bottom_margin">10dp</dimen>
+    <dimen name="pref_bot_card_bottom_margin">12dp</dimen>
     <dimen name="dashboard_icon_size">42dp</dimen>
     <dimen name="top_pref_start">60dp</dimen>
     <dimen name="card_height_oos">70.0dp</dimen>

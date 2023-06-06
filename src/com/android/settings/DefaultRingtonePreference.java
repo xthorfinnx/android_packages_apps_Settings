@@ -18,6 +18,7 @@ package com.android.settings;
 
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -29,8 +30,11 @@ import androidx.annotation.VisibleForTesting;
 public class DefaultRingtonePreference extends RingtonePreference {
     private static final String TAG = "DefaultRingtonePreference";
 
+    private Position position;
+
     public DefaultRingtonePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context, attrs);
     }
 
     @Override
@@ -77,4 +81,60 @@ public class DefaultRingtonePreference extends RingtonePreference {
         return RingtoneManager.getActualDefaultRingtoneUri(mUserContext, getRingtoneType());
     }
 
+    private void init(Context context, AttributeSet attrs) {
+        // Retrieve and set the layout resource based on position
+        // otherwise do not set any layout
+        position = getPosition(context, attrs);
+        if (position != null) {
+            int layoutResId = getLayoutResourceId(position);
+            setLayoutResource(layoutResId);
+        }
+    }
+
+    private Position getPosition(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AdaptivePreference);
+        String positionAttribute = typedArray.getString(R.styleable.AdaptivePreference_position);
+        typedArray.recycle();
+
+        Position positionFromAttribute = Position.fromAttribute(positionAttribute);
+        if (positionFromAttribute != null) {
+            return positionFromAttribute;
+        }
+
+        return null;
+    }
+
+    private int getLayoutResourceId(Position position) {
+        switch (position) {
+            case TOP:
+                return R.layout.arc_card_about_top;
+            case BOTTOM:
+                return R.layout.arc_card_about_bottom;
+            case MIDDLE:
+                return R.layout.arc_card_about_middle;
+            default:
+                return R.layout.arc_card_about_middle;
+        }
+    }
+
+    private enum Position {
+        TOP,
+        MIDDLE,
+        BOTTOM;
+
+        public static Position fromAttribute(String attribute) {
+            if (attribute != null) {
+                switch (attribute.toLowerCase()) {
+                    case "top":
+                        return TOP;
+                    case "bottom":
+                        return BOTTOM;
+                    case "middle":
+                        return MIDDLE;
+                        
+                }
+            }
+            return null;
+        }
+    }
 }
