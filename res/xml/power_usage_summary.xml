@@ -74,6 +74,13 @@
         settings:position="top"
         settings:keywords="@string/keywords_battery_usage" />
 
+    <com.rising.settings.preferences.SecureSettingSwitchPreference
+        android:key="sys_adaptive_charging_enabled"
+        android:title="@string/sys_adaptive_charging_title"
+        android:summary="@string/sys_adaptive_charging_summary"
+        settings:position="middle"
+        android:defaultValue="true" />
+
     <com.rising.settings.preferences.AdaptivePreference
         android:fragment="com.android.settings.fuelgauge.batterysaver.BatterySaverSettings"
         android:key="battery_saver_summary"
