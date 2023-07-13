@@ -89,14 +89,6 @@
         settings:position="middle"
         settings:controller="com.android.settings.fuelgauge.BatterySaverController" />
 
-    <Preference
-        android:fragment="com.android.settings.fuelgauge.SmartBatterySettings"
-        android:key="smart_battery_manager"
-        android:title="@string/smart_battery_manager_title"
-        settings:controller="com.android.settings.fuelgauge.batterytip.BatteryManagerPreferenceController"
-        settings:position="middle"
-        settings:keywords="@string/keywords_battery_adaptive_preferences" />
-
     <!-- Charging control -->
     <com.rising.settings.preferences.RisingAdaptivePartsPreference
         android:key="charging_control"
