@@ -369,6 +369,9 @@
     <!-- Whether location mode is available or not. -->
     <bool name="config_location_mode_available">true</bool>
 
+    <!-- Whether to color inversion settings is available or not. -->
+    <bool name="config_show_color_inversion_settings">true</bool>
+
     <!-- Whether location scanning is available or not. -->
     <bool name="config_show_location_scanning">true</bool>
 
