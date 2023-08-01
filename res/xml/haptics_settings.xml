@@ -44,6 +44,18 @@
         settings:interval="1"
         settings:position="middle"/>
 
+    <!-- QS tile haptics intensity -->
+    <com.rising.settings.preferences.RisingSettingSeekBarPreference
+        android:key="qs_panel_tile_haptic"
+        android:icon="@drawable/ic_qs_tile"
+        android:title="@string/qs_panel_tile_haptic_intensity_title"
+        android:order="-997"
+        android:max="5"
+        settings:min="0"
+        android:defaultValue="0"
+        settings:interval="1"
+        settings:position="middle"/>
+        
     <!-- Edge scrolling intensity -->
     <com.rising.settings.preferences.RisingSettingSeekBarPreference
         android:key="edge_scrolling_haptics_intensity"
@@ -55,6 +67,7 @@
         android:defaultValue="3"
         settings:interval="1"
         settings:position="middle"/>
+
 
     <!-- Volume slider intensity -->
     <com.rising.settings.preferences.RisingSettingSeekBarPreference
