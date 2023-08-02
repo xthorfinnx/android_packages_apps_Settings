@@ -27,13 +27,13 @@ class AboutDevice : FrameLayout {
         // ROM Version
         val versionCode = SystemProperties.get("ro.rising.version")
 
-        findViewById<TextView>(R.id.romVersion).text = (context.getString(R.string.version) + " "  + versionCode).toString()
+        findViewById<TextView>(R.id.romVersion).text = context.getString(R.string.version).toString() + " " + versionCode
 
         // Device
-        var mDeviceName = SystemProperties.get("ro.product.product.device")
+        var mDeviceName = SystemProperties.get("ro.product.manufacturer") + " " + SystemProperties.get("ro.product.device") 
 
         if (mDeviceName == null) {
-            mDeviceName = Build.MODEL
+            mDeviceName = Build.MANUFACTURER + " " + Build.MODEL
         }
         findViewById<RelativeLayout>(R.id.entity_header).setOnClickListener {
             val alert: AlertDialog.Builder = AlertDialog.Builder(context, R.style.Theme_AlertDialog)
@@ -52,7 +52,7 @@ class AboutDevice : FrameLayout {
                 Settings.Global.DEVICE_NAME
             )
             if (mDeviceName == null) {
-                mDeviceName = Build.MODEL
+                mDeviceName = Build.MANUFACTURER + " " + Build.MODEL
             }
             mEditText.setText(mDeviceName)
             alert.show()

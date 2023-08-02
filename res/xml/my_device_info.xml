@@ -27,10 +27,93 @@
         settings:controller="com.android.settings.deviceinfo.DeviceNamePreferenceController"
         settings:isPreferenceVisible="true"/>
 
+    <Preference
+        android:key="rom_build_status"
+        settings:layout="@layout/rising_card_build_status"
+        android:title="@string/build_status"
+        android:summary="@string/build_status_summary_placeholder"
+        android:icon="@drawable/ic_rice_build_status"
+        settings:enableCopying="true"
+        android:selectable="true"/>
+
+    <PreferenceCategory
+        android:key="rising_hardware_info"
+        android:selectable="false"
+        android:title="@string/hardware_info_title">
+        
+    <!-- risingOS info -->
+    <com.android.settingslib.widget.LayoutPreference
+        android:key="rising_info"
+        android:layout="@layout/rising_info"
+        android:selectable="false" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory
         android:key="basic_info_category"
         android:selectable="false"
         android:title="@string/my_device_info_basic_info_category_title">
+
+    <!-- device_title -->
+    <Preference
+        android:key="rising_device"
+        settings:layout="@layout/arc_card_about_top"
+        android:title="@string/rising_device_title"
+        android:icon="@drawable/ic_build_number"
+        settings:enableCopying="true"
+        android:selectable="true"/>
+        
+    <!-- risingOS Codename -->
+    <Preference
+        android:key="os_firmware_version"
+        android:title="@string/firmware_version"
+        android:summary="@string/summary_placeholder"
+        android:icon="@drawable/ic_android_version"
+        settings:layout="@layout/arc_card_about_middle"
+        settings:enableCopying="true"
+        settings:searchable="false"
+        settings:controller="com.android.settings.deviceinfo.firmwareversion.FirmwareVersionDetailPreferenceController"/>
+
+    <!-- version_title -->
+    <Preference
+        android:key="rising_version"
+        settings:layout="@layout/arc_card_about_middle"
+        android:title="@string/rising_version_title"
+        android:icon="@drawable/ic_rice"
+        settings:enableCopying="true"
+        android:selectable="true" >
+            <intent
+               android:action="android.intent.action.VIEW"
+               android:data="https://www.youtube.com/watch?v=POe9SOEKotk" />
+      </Preference>
+
+    <!-- Security patch -->
+    <Preference
+        android:key="security_key"
+        android:title="@string/security_patch"
+        android:icon="@drawable/ic_dot_security"
+        settings:layout="@layout/arc_card_about_middle"
+        settings:enableCopying="true"
+        settings:controller="com.android.settings.deviceinfo.firmwareversion.SecurityPatchLevelPreferenceController"/>
+        
+    <!-- Build date -->
+    <Preference
+        android:key="rising_build_version"
+        settings:layout="@layout/arc_card_about_middle"
+        android:title="@string/rising_build_version_title"
+        android:icon="@drawable/ic_legal"
+        settings:enableCopying="true"
+        android:selectable="true"/>
+
+    <!-- Kernel -->
+    <Preference
+        android:key="kernel_version"
+        android:title="@string/kernel_version"
+        android:summary="@string/summary_placeholder"
+        android:icon="@drawable/ic_settings_omnigears"
+        settings:layout="@layout/arc_card_about_middle"
+        settings:enableCopying="true"
+        settings:controller="com.android.settings.deviceinfo.firmwareversion.KernelVersionPreferenceController"/>
 
         <!-- Build number -->
         <Preference
@@ -61,21 +144,9 @@
             android:icon="@drawable/phone_tint"
             android:summary="@string/summary_placeholder"
             settings:isPreferenceVisible="@bool/config_show_sim_info"
-            settings:layout="@layout/arc_card_about_middle"
+            settings:layout="@layout/arc_card_about_bottom"
             settings:controller="com.android.settings.deviceinfo.PhoneNumberPreferenceController"
             settings:enableCopying="true"/>   
-            
-        <!-- RiceDroid device section -->
-        <Preference
-            android:key="firmware_version"
-            android:order="26"
-            android:title="@string/about_device_info"
-            android:icon="@drawable/ic_android_version"
-            settings:layout="@layout/arc_card_about_bottom"
-            android:summary="@string/summary_placeholder"
-            android:fragment="com.android.settings.deviceinfo.firmwareversion.FirmwareVersionSettings"
-            settings:controller="com.android.settings.deviceinfo.firmwareversion.FirmwareVersionPreferenceController"/>  
-            
     </PreferenceCategory>
 
     <PreferenceCategory

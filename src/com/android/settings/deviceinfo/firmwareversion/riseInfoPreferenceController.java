@@ -45,105 +45,71 @@ public class riseInfoPreferenceController extends AbstractPreferenceController {
     private static final String PROP_RISING_DEVICE = "ro.rising.device";
     private static final String PROP_RISING_BUILD_TYPE = "ro.rising.packagetype";
     private static final String PROP_RISING_BUILD_VERSION = "ro.rising.build.version";
-
-
+    
     public riseInfoPreferenceController(Context context) {
         super(context);
     }
 
+    private String getPropertyOrDefault(String propName) {
+        return SystemProperties.get(propName, this.mContext.getString(R.string.device_info_default));
+    }
+
     private String getDeviceName() {
-        String device = SystemProperties.get(PROP_RISING_DEVICE, "");
-        if (device.equals("")) {
-            device = Build.MANUFACTURER + " " + Build.MODEL;
-        }
-        return device;
+        String device = getPropertyOrDefault(PROP_RISING_DEVICE);
+        return device.isEmpty() ? Build.MANUFACTURER + " " + Build.MODEL : device;
     }
 
     private String getRisingBuildVersion() {
-        final String buildVer = SystemProperties.get(PROP_RISING_BUILD_VERSION,
-                this.mContext.getString(R.string.device_info_default));;
-
-        return buildVer;
+        return getPropertyOrDefault(PROP_RISING_BUILD_VERSION);
     }
     
     private String getRisingVersion() {
-        final String version = SystemProperties.get(PROP_RISING_VERSION,
-                this.mContext.getString(R.string.device_info_default));
-        final String versionCode = SystemProperties.get(PROP_RISING_VERSION_CODE,
-                this.mContext.getString(R.string.device_info_default));
-        final String buildType = SystemProperties.get(PROP_RISING_BUILD_TYPE,
-                this.mContext.getString(R.string.device_info_default));
-
-        return version + " | " + versionCode + " | " + buildType;
+        return getPropertyOrDefault(PROP_RISING_VERSION) + " | " +
+               getPropertyOrDefault(PROP_RISING_VERSION_CODE) + " | " +
+               getPropertyOrDefault(PROP_RISING_BUILD_TYPE);
     }
 
     private String getRisingReleaseType() {
-        final String releaseType = SystemProperties.get(PROP_RISING_RELEASETYPE,
-                this.mContext.getString(R.string.device_info_default));
-	
+        final String releaseType = getPropertyOrDefault(PROP_RISING_RELEASETYPE);
         return releaseType.substring(0, 1).toUpperCase() +
-                 releaseType.substring(1).toLowerCase();
+               releaseType.substring(1).toLowerCase();
     }
     
     private String getRisingbuildStatus() {
-	final String buildType = SystemProperties.get(PROP_RISING_RELEASETYPE,
-                this.mContext.getString(R.string.device_info_default));
-        final String isOfficial = this.mContext.getString(R.string.build_is_official_title);
-	final String isCommunity = this.mContext.getString(R.string.build_is_community_title);
-	
-	if (buildType.toLowerCase().equals("official")) {
-		return isOfficial;
-	} else {
-		return isCommunity;
-	}
+        final String buildType = getPropertyOrDefault(PROP_RISING_RELEASETYPE).toLowerCase();
+        return buildType.equals("official") ?
+            this.mContext.getString(R.string.build_is_official_title) :
+            this.mContext.getString(R.string.build_is_community_title);
     }
 
     private String getRisingMaintainer() {
-	final String RisingMaintainer = SystemProperties.get(PROP_RISING_MAINTAINER,
-                this.mContext.getString(R.string.device_info_default));
-	final String buildType = SystemProperties.get(PROP_RISING_RELEASETYPE,
-                this.mContext.getString(R.string.device_info_default));
-        final String isOffFine = this.mContext.getString(R.string.build_is_official_summary, RisingMaintainer);
-	final String isOffMiss = this.mContext.getString(R.string.build_is_official_summary_oopsie);
-	final String isCommMiss = this.mContext.getString(R.string.build_is_community_summary_oopsie);
-	final String isCommFine = this.mContext.getString(R.string.build_is_community_summary, RisingMaintainer);
-	
-	if (buildType.toLowerCase().equals("official") && !RisingMaintainer.equalsIgnoreCase("Unknown")) {
-	    return isOffFine;
-	} else if (buildType.toLowerCase().equals("official") && RisingMaintainer.equalsIgnoreCase("Unknown")) {
-	     return isOffMiss;
-	} else if (buildType.equalsIgnoreCase("Community") && RisingMaintainer.equalsIgnoreCase("Unknown")) {
-	     return isCommMiss;
-	} else {
-	    return isCommFine;
-	}
+        final String RisingMaintainer = getPropertyOrDefault(PROP_RISING_MAINTAINER);
+        final String buildType = getPropertyOrDefault(PROP_RISING_RELEASETYPE).toLowerCase();
+        
+        if (RisingMaintainer.equalsIgnoreCase("Unknown")) {
+            return buildType.equals("official") ? 
+                this.mContext.getString(R.string.build_is_official_summary_oopsie) :
+                this.mContext.getString(R.string.build_is_community_summary_oopsie);
+        }
+
+        return buildType.equals("official") ?
+            this.mContext.getString(R.string.build_is_official_summary, RisingMaintainer) :
+            this.mContext.getString(R.string.build_is_community_summary, RisingMaintainer);
     }
 
     @Override
     public void displayPreference(PreferenceScreen screen) {
         super.displayPreference(screen);
-        final Preference arcVerPref = screen.findPreference(KEY_RISING_VERSION);
-        final Preference arcDevPref = screen.findPreference(KEY_RISING_DEVICE);
-        final Preference buildStatusPref = screen.findPreference(KEY_BUILD_STATUS);
-        final Preference buildVerPref = screen.findPreference(KEY_BUILD_VERSION);
-        final String RisingVersion = getRisingVersion();
-        final String RisingDevice = getDeviceName();
-        final String RisingReleaseType = getRisingReleaseType();
+
         final String RisingMaintainer = getRisingMaintainer();
-	final String buildStatus = getRisingbuildStatus();
-	final String buildVer = getRisingBuildVersion();
-	final String isOfficial = SystemProperties.get(PROP_RISING_RELEASETYPE,
-                this.mContext.getString(R.string.device_info_default));
-	buildStatusPref.setTitle(buildStatus);
-	buildStatusPref.setSummary(RisingMaintainer);
-	buildVerPref.setSummary(buildVer);
-        arcVerPref.setSummary(RisingVersion);
-        arcDevPref.setSummary(RisingDevice);
-	if (isOfficial.toLowerCase().contains("official")) {
-		 buildStatusPref.setIcon(R.drawable.verified);
-	} else {
-		buildStatusPref.setIcon(R.drawable.unverified);
-	}
+        final String isOfficial = getPropertyOrDefault(PROP_RISING_RELEASETYPE).toLowerCase();
+
+        screen.findPreference(KEY_BUILD_STATUS).setTitle(getRisingbuildStatus());
+        screen.findPreference(KEY_BUILD_STATUS).setSummary(RisingMaintainer);
+        screen.findPreference(KEY_BUILD_VERSION).setSummary(getRisingBuildVersion());
+        screen.findPreference(KEY_RISING_VERSION).setSummary(getRisingVersion());
+        screen.findPreference(KEY_RISING_DEVICE).setSummary(getDeviceName());
+        screen.findPreference(KEY_BUILD_STATUS).setIcon(isOfficial.equals("official") ? R.drawable.verified : R.drawable.unverified);
     }
 
     @Override
