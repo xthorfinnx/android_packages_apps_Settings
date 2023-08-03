@@ -105,16 +105,6 @@
         settings:enableCopying="true"
         android:selectable="true"/>
 
-    <!-- Kernel -->
-    <Preference
-        android:key="kernel_version"
-        android:title="@string/kernel_version"
-        android:summary="@string/summary_placeholder"
-        android:icon="@drawable/ic_settings_omnigears"
-        settings:layout="@layout/arc_card_about_middle"
-        settings:enableCopying="true"
-        settings:controller="com.android.settings.deviceinfo.firmwareversion.KernelVersionPreferenceController"/>
-
         <!-- Build number -->
         <Preference
             android:key="build_number"
@@ -144,9 +134,20 @@
             android:icon="@drawable/phone_tint"
             android:summary="@string/summary_placeholder"
             settings:isPreferenceVisible="@bool/config_show_sim_info"
-            settings:layout="@layout/arc_card_about_bottom"
+            settings:layout="@layout/arc_card_about_middle"
             settings:controller="com.android.settings.deviceinfo.PhoneNumberPreferenceController"
             settings:enableCopying="true"/>   
+            
+    <!-- Kernel -->
+    <Preference
+        android:key="kernel_version"
+        android:order="27"
+        android:title="@string/kernel_version"
+        android:summary="@string/summary_placeholder"
+        android:icon="@drawable/ic_settings_omnigears"
+        settings:layout="@layout/arc_card_about_bottom"
+        settings:enableCopying="true"
+        settings:controller="com.android.settings.deviceinfo.firmwareversion.KernelVersionPreferenceController"/>
     </PreferenceCategory>
 
     <PreferenceCategory
