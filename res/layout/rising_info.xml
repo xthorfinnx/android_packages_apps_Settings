@@ -64,8 +64,10 @@
                     android:id="@+id/chipset_summary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     style="@style/TextAppearance.riceInfoSummary" />
-                
+                                
             </LinearLayout>
 
             <LinearLayout
@@ -94,6 +96,8 @@
                         android:id="@+id/cust_storage_summary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:ellipsize="end"
                         style="@style/TextAppearance.riceInfoReleaseSummary" />
 
             </LinearLayout>
@@ -135,6 +139,8 @@
                     android:id="@+id/cust_battery_summary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     style="@style/TextAppearance.riceInfoReleaseSummary" />
                 
             </LinearLayout>
@@ -165,6 +171,8 @@
                     android:id="@+id/cust_display_summary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     style="@style/TextAppearance.riceInfoSummary" />
 
             </LinearLayout>
